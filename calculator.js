@@ -2,11 +2,14 @@
 
 let amountOfOperators = 0;
 
-
+/*
+    Setting up all onclick functions for everybutton
+    instead of doing it manually, get every possible button and just make it so if it is not a special button then push it to the display, 
+    anything else we would do special code for.
+*/
 document.querySelectorAll("button").forEach(button =>{
 
     button.onclick = () => {
-        
         switch(button.id){
 
             case "clear":
@@ -14,7 +17,8 @@ document.querySelectorAll("button").forEach(button =>{
                 break;
 
             case "backSpace":
-                (document.getElementById("display").value == "" ? (alert("You have nothing to remove in the display!"), amountOfOperators = 0) : (document.getElementById("display").value = document.getElementById("display").value.substring(0,document.getElementById("display").value.length-1), (document.getElementById("display").value === "" ? amountOfOperators = 0 : amountOfOperators = amountOfOperators)));
+                //If the display is empty, say the display is empty, anything else: if the character that is going to be removed is an operator, then make amountOfOperators 0, then remove the character like intended, if it is not an operator then just remove the character like normal.
+                (document.getElementById("display").value == "" ? (alert("You have nothing to remove in the display!"), amountOfOperators = 0) : ( ['+', '-', '*', '/', 'x'].includes(document.getElementById("display").value.substring(document.getElementById("display").value.length-1 , document.getElementById("display").value.length)) ? amountOfOperators = 0 : amountOfOperators = amountOfOperators,  document.getElementById("display").value = document.getElementById("display").value.substring(0,document.getElementById("display").value.length-1)));
                 break;
             
             case "equal":
@@ -33,6 +37,12 @@ document.querySelectorAll("button").forEach(button =>{
     }
 });
 
+/*
+    function addToDisplay(String InputToAdd)
+     this function takes an Input as a random string and pushes that to the "display"
+     if the string is an operator then run the addOperatorToDisplay() function.
+
+*/
 function addToDisplay(InputToAdd){
     switch(InputToAdd){
         case "/":
@@ -54,6 +64,12 @@ function addToDisplay(InputToAdd){
     
 }
 
+/*
+    function addOperatorToDisplay(String Operator)
+     this function takes an operator ONLY and increments the amountOfOperators value by one and adds the operator to the display.
+     If the amountOfOperators is greater than 0, (meaning the user already added an operator)...
+     then push an alert and disallow the user from writing another operator. (since only simple arithmetic)
+*/
 function addOperatorToDisplay(Operator){
 
     if(amountOfOperators > 0){
@@ -65,6 +81,12 @@ function addOperatorToDisplay(Operator){
 
     document.getElementById("display").value+=Operator;
 }
+
+/*
+    function CheckIfStatementIsApplicable(String statement)
+     this function checks if the statement is a correct math statement. (eg. NOT x1215, or 1512x, always has to be 12x15)
+     if the function is correct, return true anything else return false.
+*/
 
 function CheckIfStatementIsApplicable(statement){
     for (let op of ['+', '-', '*', '/', 'x']) {
@@ -83,6 +105,11 @@ function CheckIfStatementIsApplicable(statement){
     }
 }
 
+/*
+    function CalculateStatement(String statement)
+     this function calculates the statement that should already have been confirmed as correct.
+
+*/
 
 function CalculateStatement(statement){
     for (let op of ['+', '-', '*', '/', 'x']) {
@@ -100,7 +127,7 @@ function CalculateStatement(statement){
                     break;
 
                 case "/":
-                    
+                    // if the user has entered a 0, that means they are dividing by 0.
                     (before !== 0 && after !== 0) ? document.getElementById("display").value = String(before/after): (alert("Divide by Zero!"), clearDisplay());
                     break;
                 case "+":
@@ -117,13 +144,19 @@ function CalculateStatement(statement){
     amountOfOperators = 0;
     
 }
-
+/*
+    function clearDisplay()
+     this function just removes whatever is in the display and sets amountOfOperators to 0 since it has been removed.
+*/
 function clearDisplay(){
 
     document.getElementById("display").value="";
     amountOfOperators = 0;
 }
 
+/*
+    special functionality for the dark/light mode.
+*/
 
 document.getElementById("DarkOrLight").onclick = function(){
                 
